@@ -28,7 +28,7 @@ public class Router {
             public int compare(Vertex o1, Vertex o2) {
 //                if(distanceMap.get(o1.getId()) == Double.MAX_VALUE || distanceMap.get(o1.getId()) == Double.MAX_VALUE)
 //                    return (int) Math.min( distanceMap.get(o1.getId()), distanceMap.get(o2.getId()));
-                return Double.compare(distanceMap.get(o1.getId()) , distanceMap.get(o2.getId()));
+                return Double.compare(distanceMap.get(o1.getId()), distanceMap.get(o2.getId()));
 //                return (int) (g.distance(start, o1) - g.distance(start, o2));
             }
         };
@@ -43,22 +43,22 @@ public class Router {
         Vertex v1 = g.graph.get(g.closest(stlon, stlat));
         Vertex v2 = g.graph.get(g.closest(destlon, destlat));
         // if there are no start and end means we're not adding a new stop
-        if(start == null && end == null){
+        if (start == null && end == null) {
             // set the start vertex
-            start = v1 ;
+            start = v1;
             // set the end vertex
             end = v2;
         }
 
         // set the distances of all nodes to "infinity"
-        for(Long id: g.graph.getVertexHashMap().keySet()){
+        for (Long id : g.graph.getVertexHashMap().keySet()) {
             distanceMap.put(id, Double.POSITIVE_INFINITY);
         }
         //override the start vertex to have a distance of zero
         distanceMap.put(v1.getId(), 0D);
         queue.add(v1);
 
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             // remove the closest node and save it's value
             Vertex closest = queue.remove();
             settledNodes.add(closest.getId());
@@ -70,7 +70,7 @@ public class Router {
         pathList.add(track.getId());
 
 //        LinkedList<Long> reversedPaths = new LinkedList<>();
-        while (track != v1){
+        while (track != v1) {
             pathList.addFirst(previousNode.get(track.getId()));
             track = g.graph.get(previousNode.get(track.getId()));
         }
@@ -87,15 +87,15 @@ public class Router {
 
         LinkedList<Long> route = shortestPath(g, start.getLng(), start.getLat(), stops.get(0).getLng(), stops.get(0).getLat());
 //        route.removeLast();
-        for(int i = 1; i < stops.size(); i++){
-            LinkedList<Long> subWay = shortestPath(g, stops.get(i-1).getLng(), stops.get(i-1).getLat(), stops.get(i).getLng(), stops.get(i).getLat());
+        for (int i = 1; i < stops.size(); i++) {
+            LinkedList<Long> subWay = shortestPath(g, stops.get(i - 1).getLng(), stops.get(i - 1).getLat(), stops.get(i).getLng(), stops.get(i).getLat());
 //            subWay.removeLast();
             route.addAll(subWay);
         }
 //        if(stops.size() == 1){
 //            route.removeLast();
 //        }
-        route.addAll(shortestPath(g, stops.get(stops.size() - 1).getLng(), stops.get(stops.size()-1).getLat(), end.getLng(), end.getLat()));
+        route.addAll(shortestPath(g, stops.get(stops.size() - 1).getLng(), stops.get(stops.size() - 1).getLat(), end.getLng(), end.getLat()));
         return route;
     }
 
@@ -108,24 +108,24 @@ public class Router {
         previousNode = new HashMap<>();
     }
 
-    private static void graphAdjacentNodes(Vertex vertex, PriorityQueue<Vertex> queue, GraphDB g){
+    private static void graphAdjacentNodes(Vertex vertex, PriorityQueue<Vertex> queue, GraphDB g) {
         Double edgeDistance = -1D;
         Double newDistance = -1D;
 
         // for each neighbour of given vertex
-        for(Edge edge : g.graph.getAdjacencyList().get(vertex)){
+        for (Edge edge : g.graph.getAdjacencyList().get(vertex)) {
             Vertex dest = edge.getDestination();
 
-                edgeDistance = edge.getWeight();
-                // source node's total distance + new path's weight = destination vertex distance
-                newDistance = distanceMap.get(vertex.getId()) + edgeDistance;
+            edgeDistance = edge.getWeight();
+            // source node's total distance + new path's weight = destination vertex distance
+            newDistance = distanceMap.get(vertex.getId()) + edgeDistance;
 
-                if(newDistance <  distanceMap.get(dest.getId())){
-                    distanceMap.put(dest.getId(), newDistance);
-                    previousNode.put(dest.getId(), vertex.getId()); // record where we came from
-                    queue.add(dest);
-                }
+            if (newDistance < distanceMap.get(dest.getId())) {
+                distanceMap.put(dest.getId(), newDistance);
+                previousNode.put(dest.getId(), vertex.getId()); // record where we came from
+                queue.add(dest);
             }
+        }
     }
 
 }
