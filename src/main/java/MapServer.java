@@ -132,7 +132,7 @@ public class MapServer {
 
 
         get("/", (request, response) -> {
-            response.redirect("/map.html", 301);
+            response.redirect("/index.html", 301);
             return true;
         });
     }
