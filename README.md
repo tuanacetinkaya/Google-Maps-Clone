@@ -1,4 +1,6 @@
-"# Google-Maps-Clone" 
+"# Google-Maps-Clone #"
+Reach the website from: https://tuanacetinkaya.github.io/Google-Maps-Clone/
+
 This is an assignment held in BBM204 Algorithms Course of Hacettepe University. Code was initially imported from a given template to build the website front-end. I coded the main data structures and algorithms required to run the system. You can see the work under src/main/java folder to see my code in detail. Test classes are imported from the template code. 
 
 # Implemented Milestones #
